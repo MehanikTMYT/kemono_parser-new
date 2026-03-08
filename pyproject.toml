@@ -29,7 +29,11 @@ dependencies = [
     "click>=8.0.0",
     "pyyaml>=6.0",
     "python-dotenv>=0.21.0",
+    "playwright>=1.40.0",
 ]
+
+[tool.setuptools.packages.find]
+include = ["api*", "cli*", "config*", "core*", "downloaders*", "modules*", "storage*", "utils*"]
 
 [project.optional-dependencies]
 dev = [
