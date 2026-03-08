@@ -52,16 +52,19 @@ class TestKemonoClient:
         assert client.service == "kemono"
         assert "kemono.cr" in client.base_url
     
-    @patch("requests.Session.get")
-    def test_get_creators_list(self, mock_get, client):
-        """Получение списка создателей"""
-        mock_response = Mock()
-        mock_response.text = "creator1\ncreator2\ncreator3"
-        mock_get.return_value = mock_response
+    @patch.object(KemonoClient, '_request')
+    def test_search_creator(self, mock_request, client):
+        """Поиск создателя через posts endpoint"""
+        mock_data = [
+            {"user": {"id": "123", "name": "TestArtist"}, "service": "patreon"},
+            {"user": {"id": "456", "name": "AnotherArtist"}, "service": "fanbox"}
+        ]
+        mock_request.return_value = mock_data
         
-        creators = client.get_creators_list()
-        assert len(creators) == 3
-        assert "creator1" in creators
+        results = client.search_creator("Test", "patreon")
+        assert isinstance(results, list)
+        assert len(results) == 1
+        assert results[0]["creator_id"] == "123"
     
     def test_search_creator_empty(self, client):
         """Поиск создателя (пустой результат)"""
