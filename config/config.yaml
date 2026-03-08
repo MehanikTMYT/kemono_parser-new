@@ -1,0 +1,60 @@
+# Kemono Parser Configuration
+
+app:
+  name: "Kemono Parser"
+  version: "1.0.0"
+  log_level: "INFO"
+  debug: false
+
+api:
+  service: "kemono"
+  rate_limit: 30
+  timeout: 30
+  retry_count: 3
+  # Session cookie для авторизации (получить после логина на kemono.cr)
+  session_cookie: null
+
+modules:
+  api_client:
+    enabled: true
+    service: "kemono"
+    rate_limit: 30
+    timeout: 30
+    proxy: null
+    session_cookie: null  # Вставьте ваш session cookie сюда
+  
+  ip_checker:
+    enabled: true
+    check_url: "https://ipapi.co/json/"
+    cache_ttl: 300
+  
+  proxy_manager:
+    enabled: true
+    proxy_url: null
+    auto_rotate: false
+  
+  artist_search:
+    enabled: true
+    cache_enabled: true
+    cache_ttl: 3600
+  
+  post_parser:
+    enabled: true
+    save_metadata: true
+    metadata_dir: "./metadata"
+  
+  file_downloader:
+    enabled: true
+    download_dir: "./downloads"
+    chunk_size: 8192
+    timeout: 60
+    check_ip_for: ["dropbox.com", "google.com"]
+
+storage:
+  type: "sqlite"
+  path: "./data/parser.db"
+
+downloads:
+  base_dir: "./downloads"
+  organize_by: "creator"
+  max_concurrent: 3
